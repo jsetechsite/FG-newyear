@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #ffd700;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050505;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Batman Silhouette Styling */
+        .batman {
+            position: absolute;
+            bottom: 40px;
+            /* Moved up slightly to make room for footer */
+            right: 10%;
+            width: 200px;
+            height: auto;
+            z-index: 2;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.9));
+            pointer-events: none;
+            transition: transform 0.5s ease;
+        }
+
+        .bat-signal {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0) 70%);
+            z-index: 1;
+            opacity: 0.5;
+            animation: flicker 4s infinite;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            pointer-events: none;
+            /* Let clicks pass through to fireworks */
+            padding: 20px;
+            perspective: 1000px;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(to bottom, #fff 20%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        #name-display {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(4rem, 8vw, 6rem);
+            color: var(--gold);
+            margin: 10px 0;
+            font-weight: 400;
+            min-height: 1.2em;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: text-shadow 0.1s ease, transform 0.1s ease;
+            cursor: default;
+            pointer-events: auto;
+            animation: fadeInRise 1s ease-out forwards 0.5s;
+        }
+
+        #name-display:hover {
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+        }
+
+        .thank-you {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards 1.5s;
+        }
+
+        .bat-button {
+            display: inline-block;
+            margin-top: 30px;
+            width: 50px;
+            height: auto;
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards 2s;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .bat-button:hover {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+        }
+
+        .bat-button img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
+            z-index: 20;
+            text-transform: uppercase;
+        }
+
+        @keyframes flicker {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+                transform: scale(1);
+            }
+
+            to {
+                filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes fadeInRise {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            h1 {
+                letter-spacing: 2px;
+            }
+
+            .batman {
+                width: 120px;
+                right: 5%;
+                bottom: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bat-signal">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#ffd700"
+                d="M250 150c-20 0-40 10-60 30-15-15-35-25-55-25-40 0-75 35-75 80 0 50 60 90 130 115 10 5 20 10 30 15 10-5 20-10 30-15 70-25 130-65 130-115 0-45-35-80-75-80-20 0-40 10-55 25-20-20-40-30-60-30z"
+                opacity="0.4" />
+        </svg>
+    </div>
+
+
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="content">
+        <h1>Happy New Year!</h1>
+        <div id="name-display"></div>
+        <div class="thank-you">You're amazing and thanks for everything!</div>
+        <a href="./easteregg.jpg" target="_blank" class="bat-button" title="Open Batman Image">
+            <img src="./batman.png" alt="Batman Icon">
+        </a>
+    </div>
+
+    <footer style="font-size: x-small;">&copy; food gang copyright 2026</footer>
+
+    <script>
+        // --- URL Parameter Logic ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('n');
+        const nameElement = document.getElementById('name-display');
+
+        if (name) {
+            nameElement.textContent = name;
+        } else {
+            nameElement.textContent = "";
+        }
+
+        if (nameElement) {
+            document.addEventListener('mousemove', (e) => {
+                const { clientX, clientY } = e;
+                const { innerWidth, innerHeight } = window;
+
+                const xPos = (clientX - innerWidth / 2);
+                const yPos = (clientY - innerHeight / 2);
+
+                const tiltX = (yPos / innerHeight) * 20;
+                const tiltY = -(xPos / innerWidth) * 20;
+
+                const shadowX = -(xPos / innerWidth) * 30;
+                const shadowY = -(yPos / innerHeight) * 30;
+
+                nameElement.style.transform = `perspective(500px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+                nameElement.style.textShadow = `${shadowX}px ${shadowY}px 10px rgba(0,0,0,0.5)`;
+            });
+
+            document.addEventListener('mouseleave', () => {
+                nameElement.style.transform = `perspective(500px) rotateX(0deg) rotateY(0deg)`;
+                nameElement.style.textShadow = `none`;
+            });
+        }
+
+        // --- Fireworks Engine ---
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor(x, y, color, velocityX, velocityY) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.velocityX = velocityX;
+                this.velocityY = velocityY;
+                this.alpha = 1;
+                this.friction = 0.96;
+                this.gravity = 0.03;
+            }
+
+            draw() {
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            update() {
+                this.velocityX *= this.friction;
+                this.velocityY *= this.friction;
+                this.velocityY += this.gravity;
+                this.x += this.velocityX;
+                this.y += this.velocityY;
+                this.alpha -= 0.012;
+            }
+        }
+
+        function createFirework(x, y) {
+            const count = 100;
+            const color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+            for (let i = 0; i < count; i++) {
+                const angle = (Math.PI * 2 / count) * i;
+                const speed = Math.random() * 5 + 2;
+                particles.push(new Particle(
+                    x, y, color,
+                    Math.cos(angle) * speed,
+                    Math.sin(angle) * speed
+                ));
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.15)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (Math.random() < 0.05) {
+                createFirework(
+                    Math.random() * canvas.width,
+                    Math.random() * (canvas.height * 0.7)
+                );
+            }
+
+            particles = particles.filter(p => p.alpha > 0);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('mousedown', (e) => {
+            createFirework(e.clientX, e.clientY);
+        });
+
+        window.addEventListener('touchstart', (e) => {
+            createFirework(e.touches[0].clientX, e.touches[0].clientY);
+        });
+
+        animate();
+    </script>
+</body>
+
+</html>
